@@ -440,3 +440,24 @@ This project uses a simple, native npm workspaces monorepo. No extra orchestrati
 - **TypeScript config** (to be added): root `tsconfig.base.json`; per app `tsconfig.json` extending the base and using project references.
 - **Lint/format** (to be added): root ESLint + Prettier configs; per app can extend.
 - **Evolution**: If build times or task orchestration become complex, consider adding Turborepo or Nx later (only upon explicit approval).
+
+## 13) Project Info Files
+
+- **Done**
+  - `LICENSE` (MIT)
+  - `.editorconfig` – consistent indentation/charset/EOL (4 spaces for code; 2 for JSON/YAML/XML; LF)
+  - `.gitattributes` – enforce LF line endings; mark binary assets
+  - `SECURITY.md` – private reporting policy and timelines
+  - `.env.example` per app:
+    - `apps/api/env.example`
+    - `apps/web/env.example`
+
+- **Planned**
+  - `apps/api/README.md`, `apps/web/README.md` – purpose, dev commands, env vars
+  - `CODE_OF_CONDUCT.md` – expected behavior and reporting
+  - `CONTRIBUTING.md` – how to run dev, branch/commit style, PR rules
+  - `CHANGELOG.md` – Keep a Changelog; link to releases
+  - `.github/` directory:
+    - `ISSUE_TEMPLATE/bug_report.md`, `ISSUE_TEMPLATE/feature_request.md`
+    - `PULL_REQUEST_TEMPLATE.md`
+    - `CODEOWNERS` (optional: you as owner for now)
