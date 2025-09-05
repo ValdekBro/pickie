@@ -414,3 +414,29 @@ The mapper reads new/changed rows from staging and produces upserts in the main 
 - No multi‑user accounts or collaborative filtering.
 - No social features.
 - No external preference datasets.
+
+## 12) Repository Structure (Monorepo)
+
+This project uses a simple, native npm workspaces monorepo. No extra orchestration tools are required initially.
+
+- **Approach**: npm workspaces only (minimal complexity)
+- **Runtime/tooling**: Node 20 LTS, npm 10, **CommonJS** modules
+- **Layout**:
+  - `apps/api` – NestJS API (CJS)
+  - `apps/web` – React app (CJS)
+  - `packages/` – optional shared libraries to be added later (e.g., `shared`, `eslint-config`, `tsconfig`)
+- **Workspaces**: defined in the root `package.json` → `"workspaces": ["apps/*"]`
+- **Execution patterns**:
+  - Per app:
+    ```bash
+    npm -w apps/api run dev
+    npm -w apps/web run dev
+    ```
+  - All apps (parallel when defined):
+    ```bash
+    npm run -ws --if-present dev --parallel
+    npm run -ws --if-present build
+    ```
+- **TypeScript config** (to be added): root `tsconfig.base.json`; per app `tsconfig.json` extending the base and using project references.
+- **Lint/format** (to be added): root ESLint + Prettier configs; per app can extend.
+- **Evolution**: If build times or task orchestration become complex, consider adding Turborepo or Nx later (only upon explicit approval).

@@ -1,0 +1,18 @@
+{
+  "name": "@pickie/web",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Pickie Web (React)",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20 <21",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "dev": "echo \"web dev not configured yet\"",
+    "build": "echo \"web build not configured yet\"",
+    "typecheck": "echo \"web typecheck not configured yet\"",
+    "lint": "echo \"web lint not configured yet\"",
+    "format": "echo \"web format not configured yet\""
+  }
+}

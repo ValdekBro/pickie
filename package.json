@@ -1,0 +1,22 @@
+{
+  "name": "pickie",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Pickie monorepo (api + web)",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20 <21",
+    "npm": ">=10"
+  },
+  "packageManager": "npm@10",
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "echo \"dev not configured yet\"",
+    "build": "echo \"build not configured yet\"",
+    "typecheck": "echo \"typecheck not configured yet\"",
+    "lint": "echo \"lint not configured yet\"",
+    "format": "echo \"format not configured yet\""
+  }
+}
