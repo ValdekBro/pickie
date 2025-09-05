@@ -4,10 +4,7 @@
     "outDir": "dist",
     "rootDir": "src",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "lib": ["ES2022"],
-    "module": "commonjs",
-    "target": "ES2022"
+    "emitDecoratorMetadata": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
