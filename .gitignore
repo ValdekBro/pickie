@@ -1,0 +1,47 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# OS / Editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# TypeScript build info
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+
+# Coverage
+coverage/
+**/coverage/
+.nyc_output/
+
+# Tool caches
+.eslintcache
+.turbo/
+.nx/
+.cache/
+.parcel-cache/
+.vite/
+.next/
+
+# App-specific caches (web)
+apps/web/.cache/
+apps/web/.parcel-cache/
+

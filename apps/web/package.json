@@ -14,5 +14,8 @@
     "typecheck": "echo \"web typecheck not configured yet\"",
     "lint": "echo \"web lint not configured yet\"",
     "format": "echo \"web format not configured yet\""
-  }
+  },
+  "browserslist": [
+    "last 2 Safari versions"
+  ]
 }

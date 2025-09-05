@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "description": "Pickie monorepo (api + web)",
   "type": "commonjs",
+  "license": "MIT",
   "engines": {
     "node": ">=20 <21",
     "npm": ">=10"
@@ -12,11 +13,17 @@
   "workspaces": [
     "apps/*"
   ],
+  "overrides": {
+    "typescript": "5.5.x",
+    "eslint": "9.x",
+    "@types/node": "20.x"
+  },
   "scripts": {
-    "dev": "echo \"dev not configured yet\"",
-    "build": "echo \"build not configured yet\"",
-    "typecheck": "echo \"typecheck not configured yet\"",
-    "lint": "echo \"lint not configured yet\"",
-    "format": "echo \"format not configured yet\""
+    "preinstall": "node -e \"const [major]=process.versions.node.split('.') .map(Number); if(major!==20){console.error('Node 20.x required; detected '+process.version); process.exit(1);}\"",
+    "dev": "npm run -ws --if-present dev --parallel",
+    "build": "npm run -ws --if-present build",
+    "typecheck": "npm run -ws --if-present typecheck",
+    "lint": "npm run -ws --if-present lint",
+    "format": "npm run -ws --if-present format"
   }
 }
