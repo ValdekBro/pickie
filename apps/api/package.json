@@ -14,5 +14,8 @@
     "typecheck": "echo \"api typecheck not configured yet\"",
     "lint": "echo \"api lint not configured yet\"",
     "format": "echo \"api format not configured yet\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.13"
   }
 }

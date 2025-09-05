@@ -461,3 +461,40 @@ This project uses a simple, native npm workspaces monorepo. No extra orchestrati
     - `ISSUE_TEMPLATE/bug_report.md`, `ISSUE_TEMPLATE/feature_request.md`
     - `PULL_REQUEST_TEMPLATE.md`
     - `CODEOWNERS` (optional: you as owner for now)
+
+## 14) Tooling & Config Highlights
+
+- **Node/Package Manager**
+  - Node 20 LTS; npm 10 (`packageManager: npm@10`).
+  - Root `preinstall` script enforces Node 20.x (install fails otherwise).
+
+- **Workspace orchestration (root package.json)**
+  - `dev`: run all workspace dev scripts in parallel
+  - `build`: run all workspace build scripts
+  - `typecheck` / `lint` / `format`: fan out to workspaces
+
+- **TypeScript setup**
+  - Root `tsconfig.base.json`: ES2022, CommonJS, strict, `resolveJsonModule`, decorators enabled in API.
+  - Root `tsconfig.json`: project references → `apps/api`, `apps/web`.
+  - `apps/api/tsconfig.json`: `experimentalDecorators`, `emitDecoratorMetadata`, `rootDir: src`, `outDir: dist`.
+  - `apps/web/tsconfig.json`: `jsx: react-jsx`, DOM libs, `rootDir: src`, `outDir: dist`.
+
+- **Editor & Git hygiene**
+  - `.editorconfig`: spaces; indent 4 (code), 2 (JSON/YAML/XML); `lf`; UTF‑8; trim trailing whitespace; final newline; Makefile uses tabs; max line length 120.
+  - `.gitattributes`: force LF for text; CRLF on Windows scripts; mark media/fonts/archives as binary.
+  - `.gitignore`: Node, env, build outputs, caches; app‑specific `.gitignore` placeholders in `apps/*`.
+
+- **Environment examples**
+  - `apps/api/env.example`: `NODE_ENV`, `PORT`, `LOG_LEVEL`, `DATABASE_URL` (Postgres), `MONGODB_URI` (staging).
+  - `apps/web/env.example`: `VITE_API_URL`, `VITE_ENABLE_DEBUG`.
+
+- **Web targets**
+  - `apps/web/package.json` → `browserslist: ["last 2 Safari versions"]` (expand later as needed).
+
+- **Version pinning overrides**
+  - Root `overrides`: `typescript@5.5.x`, `eslint@9.x`, `@types/node@20.x` (applies when added).
+
+- **Test fixtures for formatters**
+  - Intentionally badly formatted TS files:
+    - `apps/api/src/dummy.ts`
+    - `apps/web/src/dummy.ts`
