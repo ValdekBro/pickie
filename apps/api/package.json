@@ -11,9 +11,11 @@
   "scripts": {
     "dev": "echo \"api dev not configured yet\"",
     "build": "echo \"api build not configured yet\"",
-    "typecheck": "echo \"api typecheck not configured yet\"",
-    "lint": "echo \"api lint not configured yet\"",
-    "format": "echo \"api format not configured yet\""
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,md,json,yml,yaml}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,md,json,yml,yaml}\""
   },
   "devDependencies": {
     "@types/node": "^20.19.13"

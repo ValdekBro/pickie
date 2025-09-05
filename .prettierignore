@@ -1,0 +1,20 @@
+# Build outputs
+/dist
+**/dist
+/build
+**/build
+
+# Dependencies
+/node_modules
+**/node_modules
+
+# Coverage
+coverage
+**/coverage
+
+# Generated
+*.tsbuildinfo
+**/*.tsbuildinfo
+
+# Lockfiles (formatting not needed)
+package-lock.json

@@ -11,9 +11,11 @@
   "scripts": {
     "dev": "echo \"web dev not configured yet\"",
     "build": "echo \"web build not configured yet\"",
-    "typecheck": "echo \"web typecheck not configured yet\"",
-    "lint": "echo \"web lint not configured yet\"",
-    "format": "echo \"web format not configured yet\""
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint \"src/**/*.{ts,tsx,jsx,js}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx,jsx,js}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,jsx,js,md,json,yml,yaml}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,jsx,js,md,json,yml,yaml}\""
   },
   "browserslist": [
     "last 2 Safari versions"

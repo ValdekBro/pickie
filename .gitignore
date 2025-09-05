@@ -44,4 +44,3 @@ coverage/
 # App-specific caches (web)
 apps/web/.cache/
 apps/web/.parcel-cache/
-
