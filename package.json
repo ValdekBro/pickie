@@ -11,7 +11,9 @@
   },
   "packageManager": "npm@10",
   "workspaces": [
-    "apps/*"
+    "api",
+    "web",
+    "datasource"
   ],
   "overrides": {
     "@types/node": "20.x"

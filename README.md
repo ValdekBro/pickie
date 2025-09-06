@@ -422,15 +422,16 @@ This project uses a simple, native npm workspaces monorepo. No extra orchestrati
 - **Approach**: npm workspaces only (minimal complexity)
 - **Runtime/tooling**: Node 20 LTS, npm 10, **CommonJS** modules
 - **Layout**:
-  - `apps/api` – NestJS API (CJS)
-  - `apps/web` – React app (CJS)
+  - `api/` – NestJS API (CJS)
+  - `web/` – React app (CJS)
+  - `datasource/` – data collectors writing to MongoDB staging
   - `packages/` – optional shared libraries to be added later (e.g., `shared`, `eslint-config`, `tsconfig`)
 - **Workspaces**: defined in the root `package.json` → `"workspaces": ["apps/*"]`
 - **Execution patterns**:
   - Per app:
     ```bash
-    npm -w apps/api run dev
-    npm -w apps/web run dev
+    npm -w api run dev
+    npm -w web run dev
     ```
   - All apps (parallel when defined):
     ```bash

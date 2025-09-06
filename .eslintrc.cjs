@@ -26,7 +26,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['apps/api/**/*.{ts,tsx}'],
+      files: ['api/**/*.{ts,tsx}'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
         project: null,
@@ -43,7 +43,7 @@ module.exports = {
       },
     },
     {
-      files: ['apps/web/**/*.{ts,tsx,jsx,js}'],
+      files: ['web/**/*.{ts,tsx,jsx,js}'],
       env: { browser: true, node: false },
       parser: '@typescript-eslint/parser',
       parserOptions: {
@@ -67,7 +67,7 @@ module.exports = {
       },
     },
     {
-      files: ['apps/datasource/**/*.{ts,tsx}'],
+      files: ['datasource/**/*.{ts,tsx}'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
         project: null,

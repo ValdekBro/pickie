@@ -2,8 +2,8 @@
   "extends": "./tsconfig.base.json",
   "files": [],
   "references": [
-    { "path": "./apps/api" },
-    { "path": "./apps/web" },
-    { "path": "./apps/datasource" }
+    { "path": "./api" },
+    { "path": "./web" },
+    { "path": "./datasource" }
   ]
 }

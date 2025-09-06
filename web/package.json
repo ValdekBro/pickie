@@ -1,8 +1,8 @@
 {
-  "name": "@pickie/web",
+  "name": "@pickie/frontend",
   "private": true,
   "version": "0.1.0",
-  "description": "Pickie Web (React)",
+  "description": "Pickie Frontend (React)",
   "type": "commonjs",
   "engines": {
     "node": ">=20 <21",
@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "echo \"web dev not configured yet\"",
     "build": "echo \"web build not configured yet\"",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start": "echo \"web start not configured yet\"",
+    "typecheck": "echo \"web typecheck not configured yet\"",
     "lint": "eslint \"src/**/*.{ts,tsx,jsx,js}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx,jsx,js}\" --fix",
     "format": "prettier --write \"src/**/*.{ts,tsx,jsx,js,md,json,yml,yaml}\"",
@@ -21,3 +22,5 @@
     "last 2 Safari versions"
   ]
 }
+
+
