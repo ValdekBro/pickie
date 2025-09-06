@@ -1,0 +1,23 @@
+{
+  "name": "@pickie/datasource",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Pickie Datasource (scrapers/parsers → MongoDB staging)",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20 <21",
+    "npm": ">=10"
+  },
+  "scripts": {
+    "dev": "echo \"datasource dev not configured yet\"",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "format": "prettier --write \"src/**/*.{ts,tsx,md,json,yml,yaml}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,md,json,yml,yaml}\""
+  }
+}
+
+

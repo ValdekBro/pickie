@@ -66,5 +66,20 @@ module.exports = {
         'react/react-in-jsx-scope': 'off',
       },
     },
+    {
+      files: ['apps/datasource/**/*.{ts,tsx}'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        project: null,
+        tsconfigRootDir: __dirname,
+      },
+      plugins: ['@typescript-eslint'],
+      extends: [
+        'plugin:@typescript-eslint/recommended',
+        'plugin:import/typescript',
+        'prettier',
+      ],
+      rules: {},
+    },
   ],
 };
