@@ -23,6 +23,7 @@ FROM base AS runtime
 WORKDIR /app
 COPY --from=build /app/api/dist ./dist
 COPY api/package.json ./package.json
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 RUN npm install --omit=dev --no-audit --loglevel=error
 EXPOSE 3000
 CMD ["node", "dist/main.js"]

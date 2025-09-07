@@ -452,6 +452,11 @@ The stack is containerized to provide isolated environments for each architectur
   - `api` – NestJS API container built from `api/Dockerfile`
   - `datasource` – worker container for datasource ingestion (placeholder)
 
+- Healthchecks
+  - `postgres` → `pg_isready`
+  - `mongo` → `mongosh --eval db.runCommand({ ping: 1 })`
+  - `api` → HTTP `GET /health` via `curl`
+
 - Networking
   - All services share the `pickie_net` bridge network
   - Host ports: `5432` (Postgres), `27017` (Mongo), `3000` (API)
