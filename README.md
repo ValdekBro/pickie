@@ -288,6 +288,17 @@ flowchart LR
   C --> E[(Mapping Logs / Metrics)]
 ```
 
+### Implementation Approach (Node‑only datasource service)
+
+- The datasource is a lightweight Node.js + TypeScript application with no framework (not NestJS).
+- Libraries:
+  - `mongodb` (official Node driver) for staging DB access
+  - `playwright` for browser‑driven scraping when pages require JS execution
+  - Native `fetch` (Undici) for HTTP requests to JSON/HTML APIs
+- Scripts are organized as small modules: scrapers → parsers → mappers. A simple runner orchestrates them. The concrete module structure will be designed next.
+- Execution: on‑demand via npm scripts, cron, or a minimal in‑process queue.
+- See `datasource/DOCUMENTATION.md` for the detailed module structure and contracts.
+
 ### Staging Database (MongoDB, per‑source collections)
 
 - **Database**: Separate MongoDB database, e.g. `pickie_staging`.
@@ -340,9 +351,7 @@ The mapper reads new/changed rows from staging and produces upserts in the main 
 ### Scheduling & Orchestration
 
 - **Scrapers**: run on cron or via a lightweight queue; each writes into its own collection.
-- **Mapper**: can run
-  - as a NestJS background worker (BullMQ/Agenda) inside the API service, or
-  - as a separate worker service connecting to MongoDB (staging) and PostgreSQL (main DB).
+- **Mapper**: runs inside the datasource Node service (no NestJS). It connects to MongoDB (staging) and PostgreSQL (main DB). Integration with Postgres can be via a shared Prisma client or via API endpoints; we'll finalize this alongside the module structure.
 - **Modes**: batch backfills (historical) and continuous incremental mapping.
 
 ### Operational Concerns
@@ -450,7 +459,7 @@ The stack is containerized to provide isolated environments for each architectur
   - `postgres` – main application DB (PostgreSQL 16)
   - `mongo` – staging database for datasource collectors (MongoDB 7)
   - `api` – NestJS API container built from `api/Dockerfile`
-  - `datasource` – worker container for datasource ingestion (placeholder)
+  - `datasource` – Node.js worker for scraping and mapping (Playwright + `mongodb`; no NestJS)
 
 - Healthchecks
   - `postgres` → `pg_isready`
@@ -488,7 +497,7 @@ The stack is containerized to provide isolated environments for each architectur
      ```
 
 - Notes
-  - The `datasource` container is a no-op placeholder for now and will be extended with real collectors and mapping jobs.
+  - The `datasource` container is a Node.js worker using Playwright + `mongodb`. We'll iterate its module structure (scrapers/parsers/mappers) next.
   - Database data is persisted via bind-mounted folders:
     - `postgres/data` → mounted to `/var/lib/postgresql/data`
     - `mongo/data` → mounted to `/data/db`
@@ -521,6 +530,15 @@ Following the compose style from the reference repo [`strichka-api`](https://git
 
 - `api/env.example` uses service hostnames `postgres` and `mongo` for compose networking.
 
+### 12.2) Datasource Service (Node‑only)
+
+- Purpose: collect raw items, normalize tags/fields, and map them into the canonical Postgres schema.
+- Implementation: Node.js + TypeScript without a framework; uses `mongodb`, `playwright`, and native `fetch`.
+- Process types:
+  - Scrapers: fetch pages/APIs (Playwright/fetch) → write to Mongo staging
+  - Parsers: clean/normalize text, extract tags and fields
+  - Mappers: upsert into main DB (Postgres) and record mapping status/metrics
+- Execution model: small composable modules with a simple runner (CLI). Exact module layout (folders, runners, shared utils) will be defined next.
 
 ## 13) Project Info Files
 
