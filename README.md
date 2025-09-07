@@ -426,7 +426,7 @@ This project uses a simple, native npm workspaces monorepo. No extra orchestrati
   - `web/` – React app (CJS)
   - `datasource/` – data collectors writing to MongoDB staging
   - `packages/` – optional shared libraries to be added later (e.g., `shared`, `eslint-config`, `tsconfig`)
-- **Workspaces**: defined in the root `package.json` → `"workspaces": ["apps/*"]`
+- **Workspaces**: defined in the root `package.json` → `"workspaces": ["api", "web", "datasource"]`
 - **Execution patterns**:
   - Per app:
     ```bash
@@ -442,6 +442,81 @@ This project uses a simple, native npm workspaces monorepo. No extra orchestrati
 - **Lint/format** (to be added): root ESLint + Prettier configs; per app can extend.
 - **Evolution**: If build times or task orchestration become complex, consider adding Turborepo or Nx later (only upon explicit approval).
 
+### 12.1) Containers & Compose (Local Development)
+
+The stack is containerized to provide isolated environments for each architectural part, inspired by the structure in `strichka-api` (core/db/redis) and adapted to Pickie (API/Postgres/Mongo) per this repo’s requirements. See `https://github.com/chipichapainc/strichka-api`.
+
+- Services
+  - `postgres` – main application DB (PostgreSQL 16)
+  - `mongo` – staging database for datasource collectors (MongoDB 7)
+  - `api` – NestJS API container built from `api/Dockerfile`
+  - `datasource` – worker container for datasource ingestion (placeholder)
+
+- Networking
+  - All services share the `pickie_net` bridge network
+  - Host ports: `5432` (Postgres), `27017` (Mongo), `3000` (API)
+
+- Environment wiring
+  - API `DATABASE_URL=postgresql://postgres:postgres@postgres:5432/pickie?schema=public`
+  - API `MONGODB_URI=mongodb://mongo:27017/pickie_staging`
+
+- Quickstart
+  1. Build images
+     ```bash
+     docker compose build
+     ```
+  2. Start stack
+     ```bash
+     docker compose up -d
+     ```
+  3. Verify
+     ```bash
+     docker compose ps
+     docker compose logs -f api
+     curl http://localhost:3000/ || true
+     ```
+  4. Stop
+     ```bash
+     docker compose down
+     # Remove volumes as well
+     docker compose down -v
+     ```
+
+- Notes
+  - The `datasource` container is a no-op placeholder for now and will be extended with real collectors and mapping jobs.
+  - Database data is persisted via bind-mounted folders:
+    - `postgres/data` → mounted to `/var/lib/postgresql/data`
+    - `mongo/data` → mounted to `/data/db`
+  - Compose passes minimal env vars; `.env` files are optional for local use.
+
+#### Environment files
+
+Following the compose style from the reference repo [`strichka-api`](https://github.com/chipichapainc/strichka-api), services read configuration from `.env` files rather than inline env vars.
+
+- Prepare env files:
+  ```bash
+  # Postgres service
+  cp postgres/.env.example postgres/.env
+
+  # API service
+  cp api/env.example api/.env
+
+  # Datasource service
+  cp datasource/.env.example datasource/.env
+  ```
+
+- Postgres `postgres/.env` contains:
+  ```
+  POSTGRES_USER=postgres
+  POSTGRES_PASSWORD=postgres
+  POSTGRES_DB=pickie
+  # Required when mounting a subdirectory under /var/lib/postgresql/data
+  PGDATA=/var/lib/postgresql/data/pgdata
+  ```
+
+- `api/env.example` uses service hostnames `postgres` and `mongo` for compose networking.
+
+
 ## 13) Project Info Files
 
 - **Done**
@@ -450,8 +525,7 @@ This project uses a simple, native npm workspaces monorepo. No extra orchestrati
   - `.gitattributes` – enforce LF line endings; mark binary assets
   - `SECURITY.md` – private reporting policy and timelines
   - `.env.example` per app:
-    - `apps/api/env.example`
-    - `apps/web/env.example`
+    - `api/env.example`
 
 - **Planned**
   - `apps/api/README.md`, `apps/web/README.md` – purpose, dev commands, env vars
@@ -462,6 +536,7 @@ This project uses a simple, native npm workspaces monorepo. No extra orchestrati
     - `ISSUE_TEMPLATE/bug_report.md`, `ISSUE_TEMPLATE/feature_request.md`
     - `PULL_REQUEST_TEMPLATE.md`
     - `CODEOWNERS` (optional: you as owner for now)
+  - `web/env.example`
 
 ## 14) Tooling & Config Highlights
 
@@ -486,11 +561,11 @@ This project uses a simple, native npm workspaces monorepo. No extra orchestrati
   - `.gitignore`: Node, env, build outputs, caches; app‑specific `.gitignore` placeholders in `apps/*`.
 
 - **Environment examples**
-  - `apps/api/env.example`: `NODE_ENV`, `PORT`, `LOG_LEVEL`, `DATABASE_URL` (Postgres), `MONGODB_URI` (staging).
-  - `apps/web/env.example`: `VITE_API_URL`, `VITE_ENABLE_DEBUG`.
+  - `api/env.example`: `NODE_ENV`, `PORT`, `LOG_LEVEL`, `DATABASE_URL` (Postgres), `MONGODB_URI` (staging).
+  - `web/env.example` (planned): `VITE_API_URL`, `VITE_ENABLE_DEBUG`.
 
 - **Web targets**
-  - `apps/web/package.json` → `browserslist: ["last 2 Safari versions"]` (expand later as needed).
+  - `web/package.json` → `browserslist: ["last 2 Safari versions"]` (expand later as needed).
 
 - **Version pinning overrides**
   - Root `overrides`: `typescript@5.5.x`, `eslint@9.x`, `@types/node@20.x` (applies when added).
