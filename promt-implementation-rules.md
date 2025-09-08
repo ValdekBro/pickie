@@ -103,6 +103,19 @@ Create granular to‑dos (≤1–2 hours each): implementation, migrations, test
 - [ ] User‑facing and developer docs updated.
 - [ ] Example snippets validated.
 
+#### 10) Open PR & Request Review (Cursor‑enabled)
+- If supported in Cursor, create a PR from the current branch:
+  - Use a conventional commit style title (e.g., `feat(datasource): add ingest pipeline ports`).
+  - Include summary, acceptance criteria, screenshots/logs, risks, rollback/flag notes.
+  - Link the task/issue; request reviewers; apply labels.
+  - Ensure branch is pushed and CI runs; reference passing checks in the PR.
+- If PR automation isn’t available, perform the same via Git hosting UI (push branch → open PR → fill template).
+
+**STOP‑GATE**
+- [ ] PR created from current branch with a clear, conventional title.
+- [ ] Issue linked, labels applied, reviewers requested.
+- [ ] CI green on PR (or deviations documented and approved).
+
 ### Project Conventions Snapshot (context cues)
 - Single‑user, tag‑driven recommendation system.
 - Stack: Node.js + TypeScript; API often NestJS; Postgres (primary), MongoDB (staging); React + Tailwind; npm workspaces.

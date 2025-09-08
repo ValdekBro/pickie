@@ -3,28 +3,29 @@
 This plan implements the datasource as a Node.js + TypeScript CLI/worker, following `README.md` and `datasource/DOCUMENTATION.md`. We proceed from generic → specific: foundations → abstractions → infrastructure → composition → CLI → template plugin → real sources.
 
 ### 0) Preflight & Project Wiring
-- [ ] Confirm Node 20 / npm 10 in workspace; CommonJS modules.
-- [ ] Create `datasource/.env.example` from doc snippet (`MONGODB_URI`, `LOG_LEVEL`, `ARTIFACTS_DIR`).
-- [ ] Confirm Compose `datasource` service runs `node dist/index.js` and reads `datasource/.env`.
-- [ ] With approval, add base deps to `datasource/package.json`: `mongodb`, `playwright` (core), optional `zod` (schemas). Add scripts: `start`, `dev`, `typecheck`, `lint`, `format`.
-- [ ] Ensure TS config extends root `tsconfig.base.json` and outputs to `dist/`.
+- [x] Confirm Node 20 / npm 10 in workspace; CommonJS modules.
+- [x] Create `datasource/.env.example` from doc snippet (`MONGODB_URI`, `LOG_LEVEL`, `ARTIFACTS_DIR`).
+- [x] Confirm Compose `datasource` service runs `node dist/index.js` and reads `datasource/.env`.
+- [x] With approval, add base deps to `datasource/package.json`: `mongodb`, `playwright` (core), optional `zod` (schemas). Add scripts: `start`, `dev`, `typecheck`, `lint`, `format`.
+- [x] Ensure TS config extends root `tsconfig.base.json` and outputs to `dist/`.
 
 ### 1) Core types and ports (generic contracts)
-- [ ] `src/core/entities/Header.ts` — `DocHeader` (naturalKey, source, postId, timestamps, pageUrl, fetchedAt).
-- [ ] `src/core/ports/SourceAdapter.ts` — `PullOpts`, `SourceItem`, `PullPage`, `SourceAdapter`.
-- [ ] `src/core/ports/ShallowMapper.ts` — `ShallowMapper<R, Body>`: `toHeader`, `toBody`.
-- [ ] `src/core/ports/Repository.ts` — `upsertMany(items)` by `naturalKey`.
-- [ ] `src/core/ports/StateStore.ts` — `IncrementalStrategy`, `Checkpoint`, `StateStore`.
-- [ ] `src/core/ports/Logger.ts`, `src/core/ports/Metrics.ts`, `src/core/ports/Diagnostics.ts`.
-- [ ] `src/core/errors/{ErrorCodes.ts,SourceError.ts,PersistenceError.ts}`.
-- [ ] Unit tests (types/shape) or stub tests for contracts.
+- [x] `src/core/entities/Header.ts` — `DocHeader` (naturalKey, source, postId, timestamps, pageUrl, fetchedAt).
+- [x] `src/core/ports/SourceAdapter.ts` — `PullOpts`, `SourceItem`, `PullPage`, `SourceAdapter`.
+- [x] `src/core/ports/ShallowMapper.ts` — `ShallowMapper<R, Body>`: `toHeader`, `toBody`.
+- [x] `src/core/ports/Repository.ts` — `upsertMany(items)` by `naturalKey`.
+- [x] `src/core/ports/StateStore.ts` — `IncrementalStrategy`, `Checkpoint`, `StateStore`.
+- [x] `src/core/ports/Logger.ts`, `src/core/ports/Metrics.ts`, `src/core/ports/Diagnostics.ts`.
+- [x] `src/core/errors/{ErrorCodes.ts,SourceError.ts,PersistenceError.ts}`.
+- [x] Unit tests (types/shape) or stub tests for contracts.
 
 ### 2) Infrastructure — MongoDB and state (generic persistence)
-- [ ] `src/infra/db/mongoClient.ts` — shared client factory, lifecycle.
-- [ ] `src/infra/db/MongoRepository.ts` — bulk upsert by `naturalKey` (ordered=false), returns void.
-- [ ] `src/infra/db/MongoStateStore.ts` — get/set `Checkpoint` by (`source`,`pipeline`).
-- [ ] `src/infra/db/indexes.ts` — ensure base indexes (`naturalKey` unique, `postId`, `updatedAt` desc).
-- [ ] Tests: repository upsert behavior; state store read/write; indexes existence.
+- [x] `src/infra/db/mongoClient.ts` — shared client factory, lifecycle.
+- [x] `src/infra/db/MongoRepository.ts` — bulk upsert by `naturalKey` (ordered=false), returns void.
+- [x] `src/infra/db/MongoStateStore.ts` — get/set `Checkpoint` by (`source`,`pipeline`).
+- [x] `src/infra/db/indexes.ts` — ensure base indexes (`naturalKey` unique, `postId`, `updatedAt` desc).
+- [x] Tests: repository upsert behavior; state store read/write; indexes existence (unit, Jest).
+- [x] Integration: in-memory MongoDB covering indexes + repo/state flows.
 
 ### 3) Infrastructure — IO wrappers & observability (generic)
 - [ ] `src/infra/http/httpClient.ts` — thin fetch wrapper (timeouts, UA; no policies yet).

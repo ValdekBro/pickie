@@ -39,7 +39,6 @@ This document describes the **code-only** structure for a Node.js/TypeScript mod
       problems-redrive.ts
       failures-list.ts
       failures-show.ts
-      failures-redrive.ts
       artifacts-cleanup.ts
   /core
     /entities
@@ -98,7 +97,7 @@ This document describes the **code-only** structure for a Node.js/TypeScript mod
       schemas.ts          # Optional runtime schemas (e.g., Zod) for options/body
       types.ts            # Body type (consistent per this collection)
       adapter.ts          # Implements SourceAdapter<Raw>
-      mapper.ts           # Implements ShallowMapper<Raw, Body>
+      mapper.ts          # Implements ShallowMapper<Raw, Body>
       index.ts            # plugin: { name, collectionName, factories, schemas?, ensureIndexes? }
       __tests__/contracts/
         adapter.contract.test.ts
@@ -129,12 +128,6 @@ This document describes the **code-only** structure for a Node.js/TypeScript mod
     memoryDiagnostics.ts
     noopLogger.ts
     noopMetrics.ts
-/docs
-  architecture.md
-  plugin-template.md
-  observability.md
-  testing.md
-  cli.md
 ```
 
 > **Barrel files** (`index.ts`) are **allowed only** in: `/core/ports`, `/shared/**`, and `/infra/observability/{sanitizers,artifacts}`.
@@ -361,29 +354,16 @@ export type SourcePlugin<Raw, Body, AOpts, MOpts> = {
 
 ## Testing strategy
 
-### Contract tests (next to each plugin)
+### Unit tests (Jest)
 
-```
-/src/sources/<source>/__tests__/contracts/
-  adapter.contract.test.ts   # pullPage shape, pagination, updatedAfter
-  mapper.contract.test.ts    # unified header + consistent body
-  indexes.contract.test.ts   # base indexes + plugin.ensureIndexes
-```
+* Location: co-located with implementation files (e.g., `/src/infra/db/MongoRepository.spec.ts`).
+* Focus: pure logic and DB calls mocked/stubbed.
 
-### Integration tests (observability)
+### Integration tests (Jest + mongodb-memory-server)
 
-```
-/tests/integration/observability/
-  runs.integration.test.ts
-  events.integration.test.ts
-  problems.integration.test.ts
-  failures.integration.test.ts
-  retention.integration.test.ts
-/tests/_shared/ { helpers for Mongo/FS & in-memory diagnostics }
-```
-
-* Contract tests should be fast and **network-free** (use fixtures/mocks).
-* Integration tests verify Mongo diagnostics collections and artifact retention on local FS.
+* Location: `/tests/integration/**`.
+* Use `mongodb-memory-server` to run real MongoDB operations in-memory (indexes, upserts, state).
+* Ensure tests are deterministic and isolated.
 
 ---
 
@@ -435,6 +415,4 @@ MONGODB_URI=mongodb://mongo:27017/pickie_staging
 ARTIFACTS_DIR=/app/artifacts
 ```
 
-- Current status: minimal bootstrap present; CLI and submodules will be scaffolded incrementally.
-
----
+- Tests: Jest is used for unit and integration tests within the datasource module.

@@ -1,0 +1,5 @@
+---
+alwaysApply: true
+---
+Always read README.md as main documentation. You should always follow this doc as its the main source of true of project. If user asks to do something different from main doc, make sure to communicate this before implementation. If you adding something new that was not described in README pls add this as part of docuemntation.
+Other documentation that a module specific always thould follow that MAIN doc README.md.
